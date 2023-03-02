@@ -1,0 +1,42 @@
+# NUSDDC-BPSWWANNX02-CLOUD Core Routing Refresh
+# Interfaces
+interface Ethernet1/3
+ description L3 CloudVPN01 gi0/0/3
+ vrf member VENDOR
+ ip address 10.0.65.187/30
+ ip router ospf 100 area 0.0.0.2
+ no shutdown
+!
+interface Ethernet2/3
+ description L3 VPN04 gi0/0/3
+ vrf member VENDOR
+ ip address 10.0.65.181/30
+ ip router ospf 100 area 0.0.0.2
+ no shutdown
+!
+interface port-channel5
+ vrf member VENDOR
+ ip address 10.0.65.46/30
+ ip ospf network point-to-point
+ ip ospf priority 0
+ ip router ospf 100 area 0.0.0.2
+!
+interface Ethernet1/1
+ description L3 port-channel to TOR01 e1/0/9
+ channel-group 5
+ no shutdown
+!
+interface Ethernet2/1
+ description L3 port-channel to TOR01 e2/0/9
+ channel-group 5
+ no shutdown
+!
+interface port-channel1
+ ip router ospf 100 area 0.0.0.2
+!
+# OSPF
+ summary-address 10.20.0.0/14
+ summary-address 10.20.0.0/16
+ summary-address 10.22.0.0/16
+ summary-address 10.40.0.0/14
+ summary-address 10.96.0.0/14

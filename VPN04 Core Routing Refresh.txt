@@ -1,0 +1,47 @@
+#VPN04 Core Routing Refresh 
+# Interfaces
+interface GigabitEthernet0/0/3
+ description to NUSDDC-BPSWWANNX01-CLOUD e2/3
+ ip flow monitor FNF-NBAR-MONITOR input
+ ip flow monitor FNF-NBAR-MONITOR output
+ ip address 10.0.64.182 255.255.255.252
+ ip nbar protocol-discovery
+ ip nat inside
+ ip ospf priority 0
+ ip ospf 100 area 2
+ ip ospf cost 9
+ speed 1000
+ no negotiation auto
+ cdp enable
+ no shutdown
+!
+interface GigabitEthernet0/1/3
+ description to NUSDDC-BPSWWANNX02-CLOUD e2/3
+ ip flow monitor FNF-NBAR-MONITOR input
+ ip flow monitor FNF-NBAR-MONITOR output
+ ip address 10.0.65.182 255.255.255.252
+ ip nbar protocol-discovery
+ ip nat inside
+ ip ospf priority 0
+ ip ospf 100 area 2
+ ip ospf cost 8
+ speed 1000
+ no negotiation auto
+ cdp enable
+ no shutdown
+!
+interface GigabitEthernet0/0/1
+ shutdown
+!
+interface GigabitEthernet0/1/1
+ shutdown
+!
+# OSPF
+router ospf 100
+# router-id 1.2.2.4
+# redistribute static subnets route-map static-routes
+# redistribute bgp 64999 subnets route-map INTERNAL-REDISTRIBUTION
+ network 10.0.64.180 0.0.0.3 area 2
+ network 10.0.65.180 0.0.0.3 area 2
+ no network 10.0.65.80 0.0.0.3 area 0
+ no network 10.0.64.80 0.0.0.3 area 0
